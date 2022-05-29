@@ -22,5 +22,5 @@ urlpatterns = [
     
     #REST API PATHS
     path('api/saved_tweets/', include('Saved_Tweets.api.urls', 'saved_tweet_api')),
-    
+    path('api/crowdsource/', include('Crowdsource.api.urls', 'crowdsource_api'))
 ]

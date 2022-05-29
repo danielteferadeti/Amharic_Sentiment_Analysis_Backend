@@ -3,41 +3,41 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from Saved_Tweets.models import Analyzed_Tweets
-from Saved_Tweets.api.serializers import Analyzed_Tweets_Serializer
+from Crowdsource.models import Crowdsource_Sentence
+from Crowdsource.api.serializers import Crowdsource_Sentence_Serializer
 
 
 @api_view(['GET', ])
-def api_all_analyzed_tweets_view(request):
+def api_all_crowdsource_sentences_view(request):
     try:
-        all_analyzed_tweets = Analyzed_Tweets.objects.all()
+        all_crowdsource_sentence = Crowdsource_Sentence.objects.all()
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == "GET":
-        serializer = Analyzed_Tweets_Serializer(all_analyzed_tweets, many=True)
+        serializer = Crowdsource_Sentence_Serializer(all_crowdsource_sentence, many=True)
         return Response(serializer.data)
     
 @api_view(['GET', ])
-def api_single_analyzed_tweet_view(request, tweetId):
+def api_single_crowdsource_sentence_view(request):
     try:
-        analyzed_tweet = Analyzed_Tweets.objects.get(tweetId = tweetId)
+        all_crowdsource_sentence = Crowdsource_Sentence.objects.filter(classification = "-1")
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == "GET":
-        serializer = Analyzed_Tweets_Serializer(analyzed_tweet)
-        return Response(serializer.data)
+        serializer = Crowdsource_Sentence_Serializer(all_crowdsource_sentence, many=True)
+        return Response(serializer.data[0])
     
 @api_view(['PUT', ])
-def api_update_analyzed_tweet_view(request, tweetId):
+def api_update_crowdsource_sentence_view(request, Id):
     try:
-        analyzed_tweet = Analyzed_Tweets.objects.get(tweetId = tweetId)
+        crowdsource_sentence = Crowdsource_Sentence.objects.get(id = Id)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == "PUT":
-        serializer = Analyzed_Tweets_Serializer(analyzed_tweet, data=request.data)
+        serializer = Crowdsource_Sentence_Serializer(crowdsource_sentence, data=request.data)
         data = {}
         if serializer.is_valid():
             serializer.save()
@@ -46,14 +46,14 @@ def api_update_analyzed_tweet_view(request, tweetId):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['DELETE', ])
-def api_delete_analyzed_tweet_view(request, tweetId):
+def api_delete_crowdsource_sentence_view(request, Id):
     try:
-        analyzed_tweet = Analyzed_Tweets.objects.get(tweetId = tweetId)
+        crowdsource_sentence = Crowdsource_Sentence.objects.get(id = Id)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == "DELETE":
-        operation = analyzed_tweet.delete()
+        operation = crowdsource_sentence.delete()
         data = {}
         if operation:
             data["Success"] = "delete Successful"
@@ -62,10 +62,10 @@ def api_delete_analyzed_tweet_view(request, tweetId):
         return Response(data=data)
     
 @api_view(['POST', ])
-def api_create_analyzed_tweet_view(request):
-    analyzed_tweet = Analyzed_Tweets()
+def api_create_crowdsource_sentence_view(request):
+    crowdsource_sentence = Crowdsource_Sentence()
     if request.method == "POST":
-        serializer = Analyzed_Tweets_Serializer(analyzed_tweet, data=request.data)
+        serializer = Crowdsource_Sentence_Serializer(crowdsource_sentence, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
