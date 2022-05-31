@@ -2,9 +2,18 @@ import imp
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+import os
+import pickle
+from sklearn.pipeline import Pipeline
+
+from django.conf import settings
 
 from Crowdsource.models import Crowdsource_Sentence
 from Crowdsource.api.serializers import Crowdsource_Sentence_Serializer
+
+import joblib
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
 @api_view(['GET', ])
@@ -70,3 +79,31 @@ def api_create_crowdsource_sentence_view(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+tokenizer = Tokenizer(num_words=5000)
+
+joblib.dump(Pipeline,'model2.sav')
+
+# def open_model():
+#     models_folder = settings.BASE_DIR / 'Crowdsource' / 'api'
+#     file_path = os.path.join(models_folder, os.path.basename("model2.sav"))
+#     with open(file_path, 'rb') as f:
+#         return pickle.load(f)
+#     # return file_path
+
+model2 = joblib.load('model2.sav')
+
+def checker(test_word):
+    tw = tokenizer.texts_to_sequences([test_word])
+    tw = pad_sequences(tw,maxlen=200)
+    return tw
+
+@api_view(['POST', ])
+def api_check_sentence_view(request):
+    if request.method == "POST":
+        data=request.data
+        k = data["A"]
+        k = checker(k)
+        to_return = model2.predict(k).item()
+        return Response(data=to_return)
