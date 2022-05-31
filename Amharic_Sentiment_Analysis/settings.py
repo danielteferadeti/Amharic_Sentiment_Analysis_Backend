@@ -87,26 +87,28 @@ WSGI_APPLICATION = 'Amharic_Sentiment_Analysis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sentiment_analysis_db',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost'
-    }
-}
+postgres://yqifstftzzeoxe:a926c23b9e5d57fc02524c2eb28d52be89cb18fb07bc696a83ba1b82923a697b@ec2-34-230-153-41.compute-1.amazonaws.com:5432/ddcstqsdb1ai1o
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'd69s7t5q9shv3r',
-#         'USER': 'qdgzjoigtukeys',
-#         'PASSWORD': '3052763c4c809511744d0a317ba541a5697cd79af80eec87c75933d413966046',
-#         'HOST': 'ec2-34-230-153-41.compute-1.amazonaws.com',
-#         'PORT':'5432',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'sentiment_analysis_db',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#         'HOST': 'localhost'
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ddcstqsdb1ai1o',
+        'USER': 'yqifstftzzeoxe',
+        'PASSWORD': 'a926c23b9e5d57fc02524c2eb28d52be89cb18fb07bc696a83ba1b82923a697b',
+        'HOST': 'ec2-34-230-153-41.compute-1.amazonaws.com',
+        'PORT':'5432',
+    }
+}
 
 
 # Password validation
